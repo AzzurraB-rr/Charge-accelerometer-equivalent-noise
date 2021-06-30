@@ -84,27 +84,27 @@ acc_noise_3 = acc_noise*np.sqrt(2)*1e6 #[um/s^2] with geometrical factor 45 degr
 #Compute the total mirror acceleration PSD, considering number of accelerometer
 psd_acc_3 = (acc_noise_3)**2 / 2 #number of acc= 2 
 #Compute the position PSD considering filter mag^2
-psd_pos_3=mag**2*psd_acc_3/(2*pi*fr)**4
+psd_pos_3=mag**2*psd_acc_3#/(2*pi*fr)**4
 #Compute reverse cumulated PSD
 rcum_psd_pos_3= np.cumsum(psd_pos_3[::-1])[::-1]*df
 
 #Mirror 2
 acc_noise_2 = acc_noise*2*1e6 #[um/s^2] with geometrical factor 2 for reflection mirror 
 psd_acc_2 = (acc_noise_2)**2/1   #number of accel=1 
-psd_pos_2=mag**2*psd_acc_2/(2*pi*fr)**4
+psd_pos_2=mag**2*psd_acc_2#/(2*pi*fr)**4
 rcum_psd_pos_2= np.cumsum(psd_pos_2[::-1])[::-1]*df
 
 #Mirror 1
 acc_noise_1 = acc_noise*2*1e6 #[um/s^2] with geometrical factor 
 psd_acc_1 = (acc_noise_1)**2 / 4 #number of accel= 4 
-psd_pos_1=mag**2*(psd_acc_1/(2*pi*fr)**4)
+psd_pos_1=mag**2*(psd_acc_1)#/(2*pi*fr)**4)
 rcum_psd_pos_1= np.cumsum(psd_pos_1[::-1])[::-1]*df
 
 
 # Compute single OPD
-OPDrms_3=np.sqrt(rcum_psd_pos_3[0])
-OPDrms_2=np.sqrt(rcum_psd_pos_2[0])
-OPDrms_1=np.sqrt(rcum_psd_pos_1[0])
+OPDrms_3=np.trapz(psd_pos_3,fr)**0.5
+OPDrms_2=np.trapz(psd_pos_2,fr)**0.5
+OPDrms_1=np.trapz(psd_pos_1,fr)**0.5
 
 print("Intrinsic accel noise="+str("%.2f" % (acc_noise[0]*1e6/g))+"µg/$Hz^0.5")
 print("OPD_M3= "+str("%.2f" % (OPDrms_3*1000))+" nm")
@@ -114,7 +114,7 @@ print("OPD_M1= "+str("%.2f" % (OPDrms_1*1000))+" nm")
 #Calculate total OPD
 PSDpos_tot=psd_pos_1+psd_pos_2+psd_pos_3
 rcum_psd_pos_tot=np.cumsum(PSDpos_tot[::-1])[::-1]*df
-OPD_rms_tot=np.sqrt(rcum_psd_pos_tot[0])
+OPD_rms_tot=np.trapz(psd_pos_tot,fr)**0.5
 print("OPD_tot= "+str("%.2f" % (OPD_rms_tot*1000))+" nm")
 
 
