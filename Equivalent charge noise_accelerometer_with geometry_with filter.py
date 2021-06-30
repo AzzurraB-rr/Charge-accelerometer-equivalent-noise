@@ -115,7 +115,7 @@ print("OPD_M1= "+str("%.2f" % (OPDrms_1*1000))+" nm")
 PSDpos_tot=psd_pos_1+psd_pos_2+psd_pos_3
 rcum_psd_pos_tot=np.cumsum(PSDpos_tot[::-1])[::-1]*df
 OPD_rms_tot=np.sqrt(rcum_psd_pos_tot[0])
-print("OPD_M1= "+str("%.2f" % (OPD_rms_tot*1000))+" nm")
+print("OPD_tot= "+str("%.2f" % (OPD_rms_tot*1000))+" nm")
 
 
 
